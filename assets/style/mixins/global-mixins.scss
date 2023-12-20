@@ -1,0 +1,28 @@
+@mixin content-max-width {
+    padding: 0 1rem;
+    max-width: calc(1500px + 2rem);
+  }
+  
+  @mixin content-max-width-small {
+    padding: 0 1rem;
+    max-width: calc(1180px + 2rem);
+  }
+  
+  @mixin content-max-width-large {
+    padding: 0 1rem;
+    max-width: calc(1920px + 2rem);
+  }
+  
+  @mixin content-max-width-without-padding {
+    max-width: 1500px;
+  }
+  
+  @mixin content-max-width-small-without-padding {
+    max-width: 1180px;
+  }
+  
+  @mixin content-max-width-large-without-padding {
+    max-width: 1920px;
+  }
+  
+  $content-width: '1500px - 2rem'

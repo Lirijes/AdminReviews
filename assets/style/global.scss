@@ -1,0 +1,41 @@
+html {
+  font-family: "Trim", "Helvetica", "Arial", sans-serif;
+  font-size: 18px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  image-rendering: -webkit-optimize-contrast;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+input[type="search"] {
+  width: 100%;
+  border-radius: 20px;
+  border-color: $color-cloud-gray;
+  background-color: $color-wild-sand;
+  border-width: 1px;
+  border-style: solid;
+  position: relative;
+  height: 50px;
+  padding: 0 15px;
+  color: $color-cod-gray;
+  font-size: 16px;
+}
+
+input[type="search"]::placeholder {
+  color: $color-hurricane-gray;
+  font-size: 14px;
+  line-height: 17px;
+  -webkit-appearance: none;
+}
+input[type="search"]:focus {
+  outline: none;
+  border-color: $color-hurricane-gray;
+}
+
+input::-ms-clear{
+  display: none;
+} 
