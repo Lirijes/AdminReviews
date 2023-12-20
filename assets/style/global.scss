@@ -11,6 +11,40 @@ body {
   height: 100%;
 }
 
+a {
+  color: $color-gray;
+  text-decoration: none;
+  display: inline-block;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 0px;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  color: $color-gray;
+}
+
+h5 {
+  font-size: 16px;
+  font-weight: 700;
+  color: $color-gray;
+}
+
+p {
+  font-size: 12px;
+}
+
 input[type="search"] {
   width: 100%;
   border-radius: 20px;
@@ -23,6 +57,7 @@ input[type="search"] {
   padding: 0 15px;
   color: $color-cod-gray;
   font-size: 16px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 input[type="search"]::placeholder {
