@@ -9,11 +9,13 @@
 <template>
   <div class="default-layout">
     <Sidemenu :modelValue="searchTerm" @update:modelValue="updateSearchTerm" />
-    <slot />
+    <div class="page-content">
+      <slot />
+    </div>
   </div>
 </template>
 
-<style lang="scss">
+<style scoped lang="scss">
 @import "./assets/style/index.scss";
 
 :root {
@@ -24,9 +26,19 @@
 .default-layout {
   margin: 0 auto;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 300px auto;
   background-color: $color-smooth-gray;
+
+  @media screen and (max-width: 600px) {
+    .sidemenu {
+      width: 100%; // Set width to 100% on smaller screens
+    }
+
+    .page-content {
+      display: none;
+    }
+  }
 }
 
 .default-layout :deep(.page) {

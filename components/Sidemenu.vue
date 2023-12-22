@@ -46,7 +46,27 @@ const randomReviews = computed(() => {
           </button>
           <h2 class="sidemenu__container-open-menu-header-title"></h2>
         </div>
-        <div class="sidemenu__container-open-menu-search">
+        <div class="sidemenu__container-open-menu-searchandfilter">
+            <div class="sidemenu__container-open-menu-searchandfilter-search">
+                <input
+                    class="sidemenu__container-open-menu-searchandfilter-search-input"
+                    type="search"
+                    :value="props.modelValue"
+                    @input="
+                    (e) =>
+                        emit('update:modelValue', (e.target as HTMLInputElement).value)
+                    "
+                    @keyup.enter="handleSearch"
+                    placeholder="search.."
+                />
+            </div>
+            <div class="sidemenu__container-open-menu-searchandfilter-filter">
+                <button class="sidemenu-btn" @click="handleSearch">
+                    <font-awesome-icon class="open-menu-filtet-icon" :icon="['fas', 'bars-staggered']" />
+                </button>
+            </div>
+        </div>
+        <!-- <div class="sidemenu__container-open-menu-search">
           <input
             class="sidemenu__container-open-menu-search-input"
             type="search"
@@ -58,7 +78,7 @@ const randomReviews = computed(() => {
             @keyup.enter="handleSearch"
             placeholder="search.."
           />
-        </div>
+        </div> -->
         <div class="sidemenu__container-open-menu-review">
           <div class="sidemenu__container-open-menu-review-header">
             <h5>New reviews</h5>
@@ -111,20 +131,20 @@ const randomReviews = computed(() => {
         <div class="sidemenu__container-closed-menu-icons">
           <NuxtLink to="/">
             <font-awesome-icon
-              class="sidemenu__container-closed-menu-icons-icon"
+              class="closed-menu-icon"
               :icon="['fas', 'magnifying-glass']"
               @click="handleSearch"
             />
           </NuxtLink>
           <NuxtLink to="/">
             <font-awesome-icon
-              class="sidemenu__container-closed-menu-icons-icon"
+              class="closed-menu-icon"
               :icon="['fas', 'check']"
             />
           </NuxtLink>
           <NuxtLink to="/">
             <font-awesome-icon
-              class="font-awesome-icon"
+              class="closed-menu-icon"
               :icon="['fas', 'xmark']"
             />
           </NuxtLink>
@@ -140,10 +160,16 @@ const randomReviews = computed(() => {
 </template>
 
 <style scoped lang="scss">
+@import "./assets/style/index.scss";
+
 .sidemenu {
   position: relative;
   min-height: 100vh;
-  width: 300px;
+  width: 100%;
+
+  @media screen and (min-width: 600px) {
+    width: 300px; 
+  }
 
   &__container {
     border-radius: 20px;
@@ -171,11 +197,25 @@ const randomReviews = computed(() => {
         }
       }
 
-      &-search {
+      &-searchandfilter {
         display: flex;
+        justify-content: space-between;
         align-items: center;
-        justify-content: center;
-        margin: 10px 0;
+        margin: 15px 0;
+
+        &-search {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+
+        &-filter {
+            background-color: $color-active-gray;
+            border-radius: 20px;
+            margin-left: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
       }
 
       &-review {
