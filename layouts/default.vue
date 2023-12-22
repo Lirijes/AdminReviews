@@ -1,9 +1,9 @@
 <script setup lang="ts">
-  const searchTerm = ref('');
+const searchTerm = ref("");
 
-  const updateSearchTerm = (newTerm : string) => {
-    searchTerm.value = newTerm;
-  };
+const updateSearchTerm = (newTerm: string) => {
+  searchTerm.value = newTerm;
+};
 </script>
 
 <template>
@@ -26,13 +26,12 @@
 .default-layout {
   margin: 0 auto;
   min-height: 100vh;
-  display: grid;
-  grid-template-columns: 300px auto;
+  display: flex;
   background-color: $color-smooth-gray;
 
   @media screen and (max-width: 600px) {
     .sidemenu {
-      width: 100%; // Set width to 100% on smaller screens
+      flex: 1; // take up all the space when under 600px screen
     }
 
     .page-content {

@@ -13,9 +13,9 @@ const handleSearch = async () => {
 
   if (searchResults.value.length > 0) {
     searchTerm.value = searchString;
-    router.push({ name: 'searchResultDisplay', query: { q: searchString } });
+    router.push({ name: "searchResultDisplay", query: { q: searchString } });
   }
-}
+};
 
 function toggleMenu() {
   showWholeMenu.value = !showWholeMenu.value;
@@ -38,30 +38,36 @@ const randomReviews = computed(() => {
     >
       <div v-if="showWholeMenu" class="sidemenu__container-open-menu">
         <div class="sidemenu__container-open-menu-header">
-          <button class="sidemenu-btn" @click="toggleMenu">
-            <font-awesome-icon :icon="['fas', 'angles-left']" />
+          <button class="black-backgroung-btn" @click="toggleMenu">
+            <font-awesome-icon class="white-icon" :icon="['fas', 'angles-left']" />
           </button>
           <h2 class="sidemenu__container-open-menu-header-title"></h2>
         </div>
         <div class="sidemenu__container-open-menu-searchandfilter">
-            <div class="sidemenu__container-open-menu-searchandfilter-search">
-                <input
-                    class="sidemenu__container-open-menu-searchandfilter-search-input"
-                    type="search"
-                    :value="props.modelValue"
-                    @input="
-                    (e) =>
-                        emit('update:modelValue', (e.target as HTMLInputElement).value)
-                    "
-                    @keyup.enter="handleSearch"
-                    placeholder="search.."
-                />
-            </div>
-            <div class="sidemenu__container-open-menu-searchandfilter-filter">
-                <button class="sidemenu-btn" @click="handleSearch">
-                    <font-awesome-icon class="open-menu-filtet-icon" :icon="['fas', 'bars-staggered']" />
-                </button>
-            </div>
+          <div class="sidemenu__container-open-menu-searchandfilter-search">
+            <input
+              class="sidemenu__container-open-menu-searchandfilter-search-input"
+              type="search"
+              :value="props.modelValue"
+              @input="
+                (e) =>
+                  emit(
+                    'update:modelValue',
+                    (e.target as HTMLInputElement).value
+                  )
+              "
+              @keyup.enter="handleSearch"
+              placeholder="search.."
+            />
+          </div>
+          <div class="sidemenu__container-open-menu-searchandfilter-filter">
+            <button class="black-backgroung-btn">
+              <font-awesome-icon
+                class="white-icon"
+                :icon="['fas', 'bars-staggered']"
+              />
+            </button>
+          </div>
         </div>
         <!-- <div class="sidemenu__container-open-menu-search">
           <input
@@ -122,7 +128,7 @@ const randomReviews = computed(() => {
       </div>
       <!-- closed menu -->
       <div v-if="!showWholeMenu" class="sidemenu__container-closed-menu">
-        <button class="sidemenu-btn" @click="toggleMenu">
+        <button class="black-backgroung-btn" @click="toggleMenu">
           <font-awesome-icon :icon="['fas', 'angles-right']" />
         </button>
         <div class="sidemenu__container-closed-menu-icons">
@@ -163,9 +169,10 @@ const randomReviews = computed(() => {
   position: relative;
   min-height: 100vh;
   width: 100%;
+  flex: 0 0 300px;
 
   @media screen and (min-width: 600px) {
-    width: 300px; 
+    width: 300px;
   }
 
   &__container {
@@ -196,22 +203,29 @@ const randomReviews = computed(() => {
 
       &-searchandfilter {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         margin: 15px 0;
 
+        @media screen and (min-width: 600px) {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin: 15px 0;
+        }
+
         &-search {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 10px 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-grow: 1;
+          margin: 10px 0;
         }
 
         &-filter {
-            background-color: $color-active-gray;
-            border-radius: 20px;
-            margin-left: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          background-color: $color-active-gray;
+          border-radius: 20px;
+          margin-left: 10px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
       }
 

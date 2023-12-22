@@ -9,6 +9,8 @@ export const useSearch = () => {
       const reviews: ReviewV2[] = getReviews();
 
       // Filter reviews based on the search term
+      //working: author name, item name
+      //not working: content, title, createdAt and published (not if i search 2023-09-27 for example), am i searching for createdAt or published?
       searchResults.value = reviews.filter(
         (review) =>
           (typeof review.author.name === "string" &&
@@ -30,12 +32,12 @@ export const useSearch = () => {
     }
   };
 
-   // Mimic onBeforeMount behavior
-   watchEffect(() => {
+  // Mimic onBeforeMount behavior
+  watchEffect(() => {
     // Fetch search results based on $route.query.q
     const query = route.query.q;
     searchTerm.value = Array.isArray(query) ? query[0] : query;
-    const searchString = searchTerm.value ?? '';
+    const searchString = searchTerm.value ?? "";
 
     // Fetch search results
     fetchSearchResults(searchString);
