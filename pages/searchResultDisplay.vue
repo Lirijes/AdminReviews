@@ -1,11 +1,5 @@
 <script setup lang="ts">
-import { useSearch } from '~/composables/useSearch';
-
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
-
-watch(searchTerm, (newSearchTerm) => {
-  fetchSearchResults(newSearchTerm ?? '');
-});
 </script>
 
 <template>

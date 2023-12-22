@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { getReviews, type ReviewV2 } from "~/utils/mockReviews";
-import { useSearch } from '~/composables/useSearch';
-
 const props = defineProps<{ modelValue: any }>();
 const emit = defineEmits(["update:modelValue"]);
 const reviews = ref<ReviewV2[]>(getReviews());
-//const searchResults = ref<ReviewV2[]>([]);
 const showWholeMenu = ref(true);
+const route = useRoute();
 const router = useRouter();
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
 
@@ -15,8 +12,8 @@ const handleSearch = async () => {
   await fetchSearchResults(searchString);
 
   if (searchResults.value.length > 0) {
-    console.log('Navigating to searchResultDisplay with query:', searchString);
-    router.push({ name: "searchResultDisplay", query: { q: searchString } });
+    searchTerm.value = searchString;
+    router.push({ name: 'searchResultDisplay', query: { q: searchString } });
   }
 }
 
