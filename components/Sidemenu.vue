@@ -3,7 +3,6 @@ const props = defineProps<{ modelValue: any }>();
 const emit = defineEmits(["update:modelValue"]);
 const reviews = ref<ReviewV2[]>(getReviews());
 const showWholeMenu = ref(true);
-const route = useRoute();
 const router = useRouter();
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
 
@@ -17,13 +16,25 @@ const handleSearch = async () => {
   }
 };
 
-function toggleMenu() {
+const toggleMenu = () => {
   showWholeMenu.value = !showWholeMenu.value;
-}
+};
+
+// Update the closed menu status on window resize
+const handleResize = () => {
+  showWholeMenu.value = !(window.innerWidth >= 576 && window.innerWidth <= 768);
+};
+
+onMounted(() => {
+  handleResize(); // Initial check
+  window.addEventListener('resize', handleResize);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize);
+});
 
 const randomReviews = computed(() => {
-  //const reviewsToUse = searchResults.value.length > 0 ? searchResults.value : items; //this is making the searched item to show in random reviews aswell
-  //const shuffledReviews = reviewsToUse.slice().sort(() => Math.random() - 0.5); // same as above
   const shuffledReviews = reviews.value.slice().sort(() => Math.random() - 0.5);
   const selectedReviews = shuffledReviews.slice(0, 2);
   return selectedReviews;
@@ -34,7 +45,8 @@ const randomReviews = computed(() => {
   <div class="sidemenu">
     <div
       class="sidemenu__container"
-      :class="{ 'sidemenu__container--closed': !showWholeMenu }"
+      :class="{ 'sidemenu__container--closed': !showWholeMenu
+     }"
     >
       <div v-if="showWholeMenu" class="sidemenu__container-open-menu">
         <div class="sidemenu__container-open-menu-header">
@@ -69,19 +81,6 @@ const randomReviews = computed(() => {
             </button>
           </div>
         </div>
-        <!-- <div class="sidemenu__container-open-menu-search">
-          <input
-            class="sidemenu__container-open-menu-search-input"
-            type="search"
-            :value="props.modelValue"
-            @input="
-              (e) =>
-                emit('update:modelValue', (e.target as HTMLInputElement).value)
-            "
-            @keyup.enter="handleSearch"
-            placeholder="search.."
-          />
-        </div> -->
         <div class="sidemenu__container-open-menu-review">
           <div class="sidemenu__container-open-menu-review-header">
             <h5>New reviews</h5>
@@ -141,6 +140,12 @@ const randomReviews = computed(() => {
           </NuxtLink>
           <NuxtLink to="/">
             <font-awesome-icon
+                class="closed-menu-icon"
+                :icon="['fas', 'bars-staggered']"
+              />
+          </NuxtLink>
+          <NuxtLink to="/">
+            <font-awesome-icon
               class="closed-menu-icon"
               :icon="['fas', 'check']"
             />
@@ -153,11 +158,6 @@ const randomReviews = computed(() => {
           </NuxtLink>
         </div>
       </div>
-      <!-- need to move this eventually to a new page -->
-      <!-- <p v-if="searchResults.length === 0">No reviews were found.</p>
-            <ul v-if="searchResults.length > 0">
-                <li v-for="result in searchResults" :key="result.id">{{ result.author.name }} - ID: {{ result.id }} - Title: {{ result.title }} - Comment: {{ result.content }}</li>
-            </ul> -->
     </div>
   </div>
 </template>
@@ -170,8 +170,9 @@ const randomReviews = computed(() => {
   min-height: 100vh;
   width: 100%;
   flex: 0 0 300px;
+  transition: all 0.3s ease-in-out;
 
-  @media screen and (min-width: 600px) {
+  @media screen and (min-width: 576px) {
     width: 300px;
   }
 
@@ -181,7 +182,8 @@ const randomReviews = computed(() => {
     padding: 20px;
     height: 100%;
     box-sizing: content-box;
-    height: 100vh;
+    height: 100%;
+    background-color: $color-smooth-gray;
 
     &--closed {
       width: 20px;

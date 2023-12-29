@@ -893,8 +893,8 @@ const input = `{
     language: string;
     item: Item;
     author: Author;
-
   }
+  
 export const getReviews = (): ReviewV2[] => { const parsedInput = JSON.parse(input); 
 const typedInput = parsedInput as {hits: {_source: {review: ReviewV2}}[]};
 const reviews = typedInput.hits.map(hit => {

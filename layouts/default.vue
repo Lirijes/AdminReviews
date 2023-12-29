@@ -19,24 +19,31 @@ const updateSearchTerm = (newTerm: string) => {
 @import "./assets/style/index.scss";
 
 :root {
-  //--text-color: #{$textColor}; // special syntaxt for it to understand its not just a simple string
-  //--hover-color: #{$hoverColor};
 }
 
 .default-layout {
+  position: relative;
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
   background-color: $color-smooth-gray;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 576px) {
     .sidemenu {
-      flex: 1; // take up all the space when under 600px screen
+      flex: 1; // take up all the space when under 576px screen
     }
 
     .page-content {
       display: none;
     }
+  }
+
+  .sidemenu {
+    flex: 0 0 300px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
   }
 }
 
@@ -44,5 +51,13 @@ const updateSearchTerm = (newTerm: string) => {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+}
+
+.page-content {
+  width: 100%;
+
+  @media screen and (min-width: 576px) and (max-width: 768px) {
+    margin-left: 70px; 
+  }
 }
 </style>
