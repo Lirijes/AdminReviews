@@ -868,7 +868,7 @@ const input = `{
     ]
   }`;
 
-  type Item = {
+  export type Item = {
     colorName: string;
     imageId?: string;
     color: string;
@@ -879,7 +879,7 @@ const input = `{
     name: string;
     id: string;
   }
-  type Author = {
+  export type Author = {
     gravatar: string;
     name: string;
   }

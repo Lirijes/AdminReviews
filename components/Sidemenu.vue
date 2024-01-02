@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Item, Author, ReviewV2 } from '@/utils/mockReviews';
+
 const props = defineProps<{ modelValue: any }>();
 const emit = defineEmits(["update:modelValue"]);
 const reviews = ref<ReviewV2[]>(getReviews());
@@ -6,6 +8,12 @@ const showWholeMenu = ref(true);
 const filterMode = ref(false);
 const router = useRouter();
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
+const filterOptions: { [key: string]: boolean } = {};
+const reviewV2Properties: (keyof ReviewV2)[] = ['id', 'content', 'title', 'createdAt', 'imageUrls', 'published', 'language', 'item', 'author'];
+
+reviewV2Properties.forEach((property) => {
+  filterOptions[property as string] = false;
+});
 
 const handleSearch = async () => {
   const searchString = props.modelValue.toLowerCase();
@@ -108,14 +116,14 @@ const randomReviews = computed(() => {
         </div>
         <div v-if="filterMode" class="sidemenu__container-open-menu-filteroptions">
           <div class="filter-options">
-            <label>
-              <input v-model="filterOption1" type="checkbox" /> Option 1
-            </label>
-            <label>
-              <input v-model="filterOption2" type="checkbox" /> Option 2
-            </label>
-            <button @click="applyFilters">Apply Filters</button>
-            <button @click="cancelFilterMode">Cancel</button>
+                <label v-for="(value, key) in filterOptions" :key="key">
+                  <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
+                </label>
+                <label>
+                  <input v-model="filterOption2" type="checkbox" /> Option 2
+                </label>
+                <button @click="applyFilters">Apply Filters</button>
+                <button @click="cancelFilterMode">Cancel</button>
           </div>
         </div>
         <div v-if="!filterMode">
