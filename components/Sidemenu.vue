@@ -3,6 +3,7 @@ const props = defineProps<{ modelValue: any }>();
 const emit = defineEmits(["update:modelValue"]);
 const reviews = ref<ReviewV2[]>(getReviews());
 const showWholeMenu = ref(true);
+const filterMode = ref(false);
 const router = useRouter();
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
 
@@ -20,13 +21,37 @@ const toggleMenu = () => {
   showWholeMenu.value = !showWholeMenu.value;
 };
 
+//hardcoded info
+const filterOption1 = ref(false);
+const filterOption2 = ref(false);
+
+//Update sidemenu content when pressing filter button
+const toggleFilterMode = () => {
+  filterMode.value = !filterMode.value;
+};
+
+const applyFilters = () => {
+  // Implement your logic to apply filters based on filterOption1 and filterOption2
+  console.log('Filter Options:', { filterOption1, filterOption2 });
+
+  // Switch back to review mode
+  filterMode.value = false;
+};
+
+const cancelFilterMode = () => {
+  // Reset filter options and switch back to review mode
+  filterOption1.value = false;
+  filterOption2.value = false;
+  filterMode.value = false;
+};
+
 // Update the closed menu status on window resize
 const handleResize = () => {
-  showWholeMenu.value = !(window.innerWidth >= 576 && window.innerWidth <= 768);
+  showWholeMenu.value = !(window.innerWidth >= 576 && window.innerWidth <= 992);
 };
 
 onMounted(() => {
-  handleResize(); // Initial check
+  handleResize();
   window.addEventListener('resize', handleResize);
 });
 
@@ -73,7 +98,7 @@ const randomReviews = computed(() => {
             />
           </div>
           <div class="sidemenu__container-open-menu-searchandfilter-filter">
-            <button class="black-backgroung-btn">
+            <button class="black-backgroung-btn" @click="toggleFilterMode">
               <font-awesome-icon
                 class="white-icon"
                 :icon="['fas', 'bars-staggered']"
@@ -81,47 +106,61 @@ const randomReviews = computed(() => {
             </button>
           </div>
         </div>
-        <div class="sidemenu__container-open-menu-review">
-          <div class="sidemenu__container-open-menu-review-header">
-            <h5>New reviews</h5>
-            <NuxtLink
-              to="/"
-              class="sidemenu__container-open-menu-review-header-showall"
-              >show all ></NuxtLink
-            >
+        <div v-if="filterMode" class="sidemenu__container-open-menu-filteroptions">
+          <div class="filter-options">
+            <label>
+              <input v-model="filterOption1" type="checkbox" /> Option 1
+            </label>
+            <label>
+              <input v-model="filterOption2" type="checkbox" /> Option 2
+            </label>
+            <button @click="applyFilters">Apply Filters</button>
+            <button @click="cancelFilterMode">Cancel</button>
           </div>
-          <div v-if="randomReviews.length > 0">
-            <div
-              v-for="review in randomReviews"
-              :key="review.id"
-              class="sidemenu__container-open-menu-review-larg-preview"
-            >
-              <div class="preview-card">
-                <h5>{{ review.author.name }}</h5>
-                <p>{{ review.content }}</p>
-                <!-- Add other review details as needed -->
+        </div>
+        <div v-if="!filterMode">
+          <div class="sidemenu__container-open-menu-review">
+            <div class="sidemenu__container-open-menu-review-header">
+              <h5>New reviews</h5>
+              <NuxtLink
+                to="/"
+                class="sidemenu__container-open-menu-review-header-showall"
+                >show all ></NuxtLink
+              >
+            </div>
+            <div v-if="randomReviews.length > 0">
+              <div
+                v-for="review in randomReviews"
+                :key="review.id"
+                class="sidemenu__container-open-menu-review-larg-preview"
+              >
+                <div class="preview-card">
+                  <h5>{{ review.author.name }}</h5>
+                  <p>{{ review.content }}</p>
+                  <!-- Add other review details as needed -->
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="sidemenu__container-open-menu-category">
-          <div class="sidemenu__container-open-menu-category-content">
-            <h5>Published reviews</h5>
-            <NuxtLink
-              to="/"
-              class="sidemenu__container-open-menu-category-content-showall"
-              >show all ></NuxtLink
-            >
+          <div class="sidemenu__container-open-menu-category">
+            <div class="sidemenu__container-open-menu-category-content">
+              <h5>Published reviews</h5>
+              <NuxtLink
+                to="/"
+                class="sidemenu__container-open-menu-category-content-showall"
+                >show all ></NuxtLink
+              >
+            </div>
           </div>
-        </div>
-        <div class="sidemenu__container-open-menu-category">
-          <div class="sidemenu__container-open-menu-category-content">
-            <h5>Unpublished reviews</h5>
-            <NuxtLink
-              to="/"
-              class="sidemenu__container-open-menu-category-content-showall"
-              >show all ></NuxtLink
-            >
+          <div class="sidemenu__container-open-menu-category">
+            <div class="sidemenu__container-open-menu-category-content">
+              <h5>Unpublished reviews</h5>
+              <NuxtLink
+                to="/"
+                class="sidemenu__container-open-menu-category-content-showall"
+                >show all ></NuxtLink
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -208,7 +247,7 @@ const randomReviews = computed(() => {
         align-items: center;
         margin: 15px 0;
 
-        @media screen and (min-width: 600px) {
+        @media screen and (min-width: 576px) {
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -228,6 +267,23 @@ const randomReviews = computed(() => {
           border-radius: 20px;
           margin-left: 10px;
           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      &-filteroptions {
+        display: flex;
+        flex-direction: column;
+        margin: 15px 0;
+
+        &-content {
+          display: flex;
+          justify-content: space-between;
+          width: 100%;
+          margin-bottom: 2px;
+
+          &-showall {
+            font-size: 12px;
+          }
         }
       }
 
@@ -302,5 +358,13 @@ const randomReviews = computed(() => {
       }
     }
   }
+}
+
+.filter-options {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px; /* Adjust the padding as needed */
+  background-color: #fff; /* Add a background color to distinguish filter options */
 }
 </style>

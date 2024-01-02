@@ -45,11 +45,13 @@ export default {
 
 <style scoped lang="scss">
 .review {
+    margin-bottom: 20px;
+    
     &__list {
-        // display: flex;
-        // flex-direction: column;
         padding: 20px;
         height: 100%;
+        border: 1px solid $color-cloud-gray;
+        border-radius: 20px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
         &:last-child .review__list-changes {

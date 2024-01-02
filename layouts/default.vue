@@ -56,8 +56,12 @@ const updateSearchTerm = (newTerm: string) => {
 .page-content {
   width: 100%;
 
-  @media screen and (min-width: 576px) and (max-width: 768px) {
+  @media screen and (min-width: 576px) and (max-width: 992px) {
     margin-left: 70px; 
+  }
+
+  @media screen and (min-width: 992px) {
+    margin-left: 300px;
   }
 }
 </style>
