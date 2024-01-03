@@ -9,9 +9,19 @@ const filterMode = ref(false);
 const router = useRouter();
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
 const filterOptions: { [key: string]: boolean } = {};
-const reviewV2Properties: (keyof ReviewV2)[] = ['id', 'content', 'title', 'createdAt', 'imageUrls', 'published', 'language', 'item', 'author'];
+const reviewV2Properties: (keyof ReviewV2)[] = ['createdAt', 'imageUrls', 'published', 'language', 'item'];
+const itemProperties: (keyof Item)[] = ['colorName', 'color', 'baseProduct', 'type', 'size', 'mainColor', 'name'];
 
+// Object to store range-based filter options
+const rangeFilters: { [key: string]: { min: number | null; max: number | null } } = {
+  createdAt: { min: null, max: null },
+};
+
+//do something else with this? need to get all the properties of the product to filter on
 reviewV2Properties.forEach((property) => {
+  filterOptions[property as string] = false;
+});
+itemProperties.forEach((property) => {
   filterOptions[property as string] = false;
 });
 
@@ -29,33 +39,31 @@ const toggleMenu = () => {
   showWholeMenu.value = !showWholeMenu.value;
 };
 
-//hardcoded info
-const filterOption1 = ref(false);
-const filterOption2 = ref(false);
-
 //Update sidemenu content when pressing filter button
 const toggleFilterMode = () => {
   filterMode.value = !filterMode.value;
 };
 
 const applyFilters = () => {
-  // Implement your logic to apply filters based on filterOption1 and filterOption2
-  console.log('Filter Options:', { filterOption1, filterOption2 });
-
+  console.log('Range Filters:', rangeFilters);
   // Switch back to review mode
   filterMode.value = false;
 };
 
 const cancelFilterMode = () => {
-  // Reset filter options and switch back to review mode
-  filterOption1.value = false;
-  filterOption2.value = false;
+  // Reset filter options and range filters and switch back to review mode
+  Object.keys(filterOptions).forEach((key) => {
+    filterOptions[key] = false;
+  });
+  Object.keys(rangeFilters).forEach((key) => {
+    rangeFilters[key].min = null;
+    rangeFilters[key].max = null;
+  });
   filterMode.value = false;
 };
 
-// Update the closed menu status on window resize
 const handleResize = () => {
-  showWholeMenu.value = !(window.innerWidth >= 576 && window.innerWidth <= 992);
+    showWholeMenu.value = window.innerWidth > 992;
 };
 
 onMounted(() => {
@@ -116,14 +124,19 @@ const randomReviews = computed(() => {
         </div>
         <div v-if="filterMode" class="sidemenu__container-open-menu-filteroptions">
           <div class="filter-options">
-                <label v-for="(value, key) in filterOptions" :key="key">
-                  <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
-                </label>
-                <label>
-                  <input v-model="filterOption2" type="checkbox" /> Option 2
-                </label>
-                <button @click="applyFilters">Apply Filters</button>
-                <button @click="cancelFilterMode">Cancel</button>
+            <label v-for="(value, key) in filterOptions" :key="key">
+              <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
+            </label>
+            <label v-for="(range, key) in rangeFilters" :key="key">
+              {{ key }}:
+              <input v-model="range.min" type="number" placeholder="Min" />
+              <input v-model="range.max" type="number" placeholder="Max" />
+            </label>
+              <!-- <label v-for="(value, key) in filterOptions" :key="key">
+                <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
+              </label> -->
+              <button class="black-background-textbtn" @click="applyFilters">Apply Filters</button>
+              <button class="black-background-textbtn" @click="cancelFilterMode">Cancel</button>
           </div>
         </div>
         <div v-if="!filterMode">
@@ -213,27 +226,44 @@ const randomReviews = computed(() => {
 @import "./assets/style/index.scss";
 
 .sidemenu {
-  position: relative;
+  position: fixed;
   min-height: 100vh;
   width: 100%;
   flex: 0 0 300px;
   transition: all 0.3s ease-in-out;
 
-  @media screen and (min-width: 576px) {
+  @media screen and (max-width: 576px) {
+    flex: none;
+    width: 100%;
+  }
+
+  @media screen and (min-width: 576px) and (max-width: 992px) {
+    flex: none;
     width: 300px;
   }
 
+  @media screen and (min-width: 992px) {
+    flex: none;
+    width: 300px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    flex: none;
+    width: 400px;
+  }
+
   &__container {
+    position: absolute;
     border-radius: 20px;
     border: 1px solid $color-cloud-gray;
     padding: 20px;
     height: 100%;
-    box-sizing: content-box;
-    height: 100%;
+    width: 100%;
     background-color: $color-smooth-gray;
 
     &--closed {
       width: 20px;
+      box-sizing: content-box;
     }
 
     &-open-menu {

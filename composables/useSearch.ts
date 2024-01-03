@@ -10,11 +10,13 @@ export const useSearch = () => {
 
       // Filter reviews based on the search term
       //working: author name, item name
-      //not working: content, title, createdAt and published (not if i search 2023-09-27 for example), am i searching for createdAt or published?
+      //not working: content (formatting?), title (formatting?), createdAt and published (not if i search 2023-09-27 for example), am i searching for createdAt or published?
       searchResults.value = reviews.filter(
         (review) =>
           (typeof review.author.name === "string" &&
             review.author.name.toLowerCase().includes(searchTerm)) ||
+          (typeof review.author.email === "string" &&
+            review.author.email.toLowerCase().includes(searchTerm)) ||
           (typeof review.content === "string" &&
             review.content.toLowerCase().includes(searchTerm)) ||
           (typeof review.title === "string" &&

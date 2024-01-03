@@ -27,24 +27,6 @@ const updateSearchTerm = (newTerm: string) => {
   min-height: 100vh;
   display: flex;
   background-color: $color-smooth-gray;
-
-  @media screen and (max-width: 576px) {
-    .sidemenu {
-      flex: 1; // take up all the space when under 576px screen
-    }
-
-    .page-content {
-      display: none;
-    }
-  }
-
-  .sidemenu {
-    flex: 0 0 300px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-  }
 }
 
 .default-layout :deep(.page) {
@@ -56,12 +38,16 @@ const updateSearchTerm = (newTerm: string) => {
 .page-content {
   width: 100%;
 
-  @media screen and (min-width: 576px) and (max-width: 992px) {
-    margin-left: 70px; 
+  @media screen and (min-width: 370px) and (max-width: 992px) {
+    margin-left: 70px;
   }
 
   @media screen and (min-width: 992px) {
     margin-left: 300px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    margin-left: 400px;
   }
 }
 </style>

@@ -882,6 +882,7 @@ const input = `{
   export type Author = {
     gravatar: string;
     name: string;
+    email: string;
   }
   export type ReviewV2 = {
     id: string;
