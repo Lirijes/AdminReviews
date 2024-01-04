@@ -1,65 +1,15 @@
 <script setup lang="ts">
-import type { Item, Author, ReviewV2 } from '@/utils/mockReviews';
 
 const props = defineProps<{ modelValue: any }>();
 const emit = defineEmits(["update:modelValue"]);
-const reviews = ref<ReviewV2[]>(getReviews());
 const showWholeMenu = ref(true);
-const filterMode = ref(false);
-const router = useRouter();
-const { searchResults, searchTerm, fetchSearchResults } = useSearch();
-const filterOptions: { [key: string]: boolean } = {};
-const reviewV2Properties: (keyof ReviewV2)[] = ['createdAt', 'imageUrls', 'published', 'language', 'item'];
-const itemProperties: (keyof Item)[] = ['colorName', 'color', 'baseProduct', 'type', 'size', 'mainColor', 'name'];
 
-// Object to store range-based filter options
-const rangeFilters: { [key: string]: { min: number | null; max: number | null } } = {
-  createdAt: { min: null, max: null },
-};
-
-//do something else with this? need to get all the properties of the product to filter on
-reviewV2Properties.forEach((property) => {
-  filterOptions[property as string] = false;
-});
-itemProperties.forEach((property) => {
-  filterOptions[property as string] = false;
-});
-
-const handleSearch = async () => {
-  const searchString = props.modelValue.toLowerCase();
-  await fetchSearchResults(searchString);
-
-  if (searchResults.value.length > 0) {
-    searchTerm.value = searchString;
-    router.push({ name: "searchResultDisplay", query: { q: searchString } });
-  }
+const updateModelValue = (newValue: any) => {
+  emit('update:modelValue', newValue);
 };
 
 const toggleMenu = () => {
   showWholeMenu.value = !showWholeMenu.value;
-};
-
-//Update sidemenu content when pressing filter button
-const toggleFilterMode = () => {
-  filterMode.value = !filterMode.value;
-};
-
-const applyFilters = () => {
-  console.log('Range Filters:', rangeFilters);
-  // Switch back to review mode
-  filterMode.value = false;
-};
-
-const cancelFilterMode = () => {
-  // Reset filter options and range filters and switch back to review mode
-  Object.keys(filterOptions).forEach((key) => {
-    filterOptions[key] = false;
-  });
-  Object.keys(rangeFilters).forEach((key) => {
-    rangeFilters[key].min = null;
-    rangeFilters[key].max = null;
-  });
-  filterMode.value = false;
 };
 
 const handleResize = () => {
@@ -74,12 +24,6 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', handleResize);
 });
-
-const randomReviews = computed(() => {
-  const shuffledReviews = reviews.value.slice().sort(() => Math.random() - 0.5);
-  const selectedReviews = shuffledReviews.slice(0, 2);
-  return selectedReviews;
-});
 </script>
 
 <template>
@@ -89,135 +33,18 @@ const randomReviews = computed(() => {
       :class="{ 'sidemenu__container--closed': !showWholeMenu
      }"
     >
-      <div v-if="showWholeMenu" class="sidemenu__container-open-menu">
-        <div class="sidemenu__container-open-menu-header">
-          <button class="black-backgroung-btn" @click="toggleMenu">
-            <font-awesome-icon class="white-icon" :icon="['fas', 'angles-left']" />
-          </button>
-          <h2 class="sidemenu__container-open-menu-header-title"></h2>
-        </div>
-        <div class="sidemenu__container-open-menu-searchandfilter">
-          <div class="sidemenu__container-open-menu-searchandfilter-search">
-            <input
-              class="sidemenu__container-open-menu-searchandfilter-search-input"
-              type="search"
-              :value="props.modelValue"
-              @input="
-                (e) =>
-                  emit(
-                    'update:modelValue',
-                    (e.target as HTMLInputElement).value
-                  )
-              "
-              @keyup.enter="handleSearch"
-              placeholder="search.."
-            />
-          </div>
-          <div class="sidemenu__container-open-menu-searchandfilter-filter">
-            <button class="black-backgroung-btn" @click="toggleFilterMode">
-              <font-awesome-icon
-                class="white-icon"
-                :icon="['fas', 'bars-staggered']"
-              />
-            </button>
-          </div>
-        </div>
-        <div v-if="filterMode" class="sidemenu__container-open-menu-filteroptions">
-          <div class="filter-options">
-            <label v-for="(value, key) in filterOptions" :key="key">
-              <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
-            </label>
-            <label v-for="(range, key) in rangeFilters" :key="key">
-              {{ key }}:
-              <input v-model="range.min" type="number" placeholder="Min" />
-              <input v-model="range.max" type="number" placeholder="Max" />
-            </label>
-              <!-- <label v-for="(value, key) in filterOptions" :key="key">
-                <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
-              </label> -->
-              <button class="black-background-textbtn" @click="applyFilters">Apply Filters</button>
-              <button class="black-background-textbtn" @click="cancelFilterMode">Cancel</button>
-          </div>
-        </div>
-        <div v-if="!filterMode">
-          <div class="sidemenu__container-open-menu-review">
-            <div class="sidemenu__container-open-menu-review-header">
-              <h5>New reviews</h5>
-              <NuxtLink
-                to="/"
-                class="sidemenu__container-open-menu-review-header-showall"
-                >show all ></NuxtLink
-              >
-            </div>
-            <div v-if="randomReviews.length > 0">
-              <div
-                v-for="review in randomReviews"
-                :key="review.id"
-                class="sidemenu__container-open-menu-review-larg-preview"
-              >
-                <div class="preview-card">
-                  <h5>{{ review.author.name }}</h5>
-                  <p>{{ review.content }}</p>
-                  <!-- Add other review details as needed -->
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="sidemenu__container-open-menu-category">
-            <div class="sidemenu__container-open-menu-category-content">
-              <h5>Published reviews</h5>
-              <NuxtLink
-                to="/"
-                class="sidemenu__container-open-menu-category-content-showall"
-                >show all ></NuxtLink
-              >
-            </div>
-          </div>
-          <div class="sidemenu__container-open-menu-category">
-            <div class="sidemenu__container-open-menu-category-content">
-              <h5>Unpublished reviews</h5>
-              <NuxtLink
-                to="/"
-                class="sidemenu__container-open-menu-category-content-showall"
-                >show all ></NuxtLink
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- closed menu -->
-      <div v-if="!showWholeMenu" class="sidemenu__container-closed-menu">
-        <button class="black-backgroung-btn" @click="toggleMenu">
-          <font-awesome-icon :icon="['fas', 'angles-right']" />
-        </button>
-        <div class="sidemenu__container-closed-menu-icons">
-          <NuxtLink to="/">
-            <font-awesome-icon
-              class="closed-menu-icon"
-              :icon="['fas', 'magnifying-glass']"
-              @click="handleSearch"
-            />
-          </NuxtLink>
-          <NuxtLink to="/">
-            <font-awesome-icon
-                class="closed-menu-icon"
-                :icon="['fas', 'bars-staggered']"
-              />
-          </NuxtLink>
-          <NuxtLink to="/">
-            <font-awesome-icon
-              class="closed-menu-icon"
-              :icon="['fas', 'check']"
-            />
-          </NuxtLink>
-          <NuxtLink to="/">
-            <font-awesome-icon
-              class="closed-menu-icon"
-              :icon="['fas', 'xmark']"
-            />
-          </NuxtLink>
-        </div>
-      </div>
+    <OpenMenu 
+      v-if="showWholeMenu" 
+      :toggleMenu="toggleMenu"
+      :modelValue="props.modelValue"
+      @update:modelValue="updateModelValue"
+      :showWholeMenu="showWholeMenu"
+    />
+    <ClosedMenu 
+      v-if="!showWholeMenu" 
+      :toggleMenu="toggleMenu" 
+      :showWholeMenu="showWholeMenu"
+    />
     </div>
   </div>
 </template>
@@ -232,9 +59,8 @@ const randomReviews = computed(() => {
   flex: 0 0 300px;
   transition: all 0.3s ease-in-out;
 
-  @media screen and (max-width: 576px) {
-    flex: none;
-    width: 100%;
+  @media screen and (min-width: 370px) and (max-width: 505px) {
+    width: 74%;
   }
 
   @media screen and (min-width: 576px) and (max-width: 992px) {
@@ -265,144 +91,6 @@ const randomReviews = computed(() => {
       width: 20px;
       box-sizing: content-box;
     }
-
-    &-open-menu {
-      display: flex;
-      flex-direction: column;
-
-      &-header {
-        display: flex;
-        align-items: center;
-        justify-content: start;
-
-        &-title {
-          font-size: 24px;
-        }
-      }
-
-      &-searchandfilter {
-        display: flex;
-        align-items: center;
-        margin: 15px 0;
-
-        @media screen and (min-width: 576px) {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin: 15px 0;
-        }
-
-        &-search {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          flex-grow: 1;
-          margin: 10px 0;
-        }
-
-        &-filter {
-          background-color: $color-active-gray;
-          border-radius: 20px;
-          margin-left: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-      }
-
-      &-filteroptions {
-        display: flex;
-        flex-direction: column;
-        margin: 15px 0;
-
-        &-content {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          margin-bottom: 2px;
-
-          &-showall {
-            font-size: 12px;
-          }
-        }
-      }
-
-      &-review {
-        display: flex;
-        flex-direction: column;
-        margin: 15px 0;
-
-        &-header {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          margin-bottom: 2px;
-
-          &-showall {
-            font-size: 12px;
-          }
-        }
-
-        &-larg-preview {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 100%;
-          height: 100px;
-          border: 1px solid $color-cloud-gray;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          margin-bottom: 20px;
-
-          &:last-child {
-            margin-bottom: 0;
-          }
-        }
-      }
-
-      &-category {
-        display: flex;
-        flex-direction: column;
-        margin: 15px 0;
-
-        &-content {
-          display: flex;
-          justify-content: space-between;
-          width: 100%;
-          margin-bottom: 2px;
-
-          &-showall {
-            font-size: 12px;
-          }
-        }
-      }
-    }
-
-    &-closed-menu {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100%;
-      cursor: pointer;
-
-      &-icons {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        height: 100%;
-        margin-top: 20px;
-
-        &-icon {
-          margin-bottom: 15px;
-        }
-      }
-    }
   }
-}
-
-.filter-options {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  padding: 20px; /* Adjust the padding as needed */
-  background-color: #fff; /* Add a background color to distinguish filter options */
 }
 </style>

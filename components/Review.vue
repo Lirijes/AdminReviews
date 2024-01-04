@@ -46,6 +46,10 @@ export default {
 <style scoped lang="scss">
 .review {
     margin-bottom: 20px;
+
+    @media  screen and (min-width: 370px ) and (max-width: 505px) {
+        width: 82%;
+    }
     
     &__list {
         padding: 20px;
@@ -73,7 +77,6 @@ export default {
             padding: 5px;
             border-bottom: 1px solid $color-cloud-gray;
         }
-
         &-changes {
             display: flex;
             flex-direction: row;
