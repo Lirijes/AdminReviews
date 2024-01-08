@@ -71,8 +71,8 @@ const randomReviews = computed(() => {
 <template>
     <div v-if="showWholeMenu" class="open-menu">
         <div class="open-menu__header">
-          <button class="black-backgroung-btn" @click="props.toggleMenu">
-            <font-awesome-icon class="white-icon" :icon="['fas', 'angles-left']" />
+          <button class="light-background-btn" @click="props.toggleMenu">
+            <font-awesome-icon :icon="['fas', 'angles-left']" />
           </button>
           <h2 class="open-menu__header-title"></h2>
         </div>
@@ -93,9 +93,8 @@ const randomReviews = computed(() => {
             />
           </div>
           <div class="open-menu__searchandfilter-filter">
-            <button class="black-backgroung-btn" @click="toggleFilterMode">
+            <button class="light-background-btn" @click="toggleFilterMode">
               <font-awesome-icon
-                class="white-icon"
                 :icon="['fas', 'bars-staggered']"
               />
             </button>
@@ -131,10 +130,7 @@ const randomReviews = computed(() => {
                 :key="review.id"
                 class="open-menu__review-larg-preview"
               >
-                <div class="preview-card">
-                  <h5>{{ review.author.name }}</h5>
-                  <p>{{ review.content }}</p>
-                </div>
+                <PreviewReview :review="review" />
               </div>
             </div>
           </div>
@@ -163,6 +159,8 @@ const randomReviews = computed(() => {
 </template>
 
 <style scoped lang="scss">
+@import "./assets/style/index.scss";
+
 .open-menu {
   display: flex;
   flex-direction: column;
@@ -215,7 +213,7 @@ const randomReviews = computed(() => {
       display: flex;
       flex-direction: column;
       padding: 20px; /* Adjust the padding as needed */
-      background-color: #fff; /* Add a background color to distinguish filter options */
+      background-color: $color-smooth-gray;
     }
 
     &-content {
@@ -240,6 +238,7 @@ const randomReviews = computed(() => {
       justify-content: space-between;
       width: 100%;
       margin-bottom: 2px;
+      color: white;
 
       &-showall {
         font-size: 12px;
@@ -248,10 +247,11 @@ const randomReviews = computed(() => {
 
     &-larg-preview {
       display: flex;
-      align-items: center;
+      //align-items: center;
       justify-content: center;
       width: 100%;
       height: 100px;
+      background-color: $color-wild-sand;
       border: 1px solid $color-cloud-gray;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -273,6 +273,7 @@ const randomReviews = computed(() => {
       justify-content: space-between;
       width: 100%;
       margin-bottom: 2px;
+      color: white;
 
       &-showall {
         font-size: 12px;

@@ -41,7 +41,6 @@ export const useSearch = () => {
     searchTerm.value = Array.isArray(query) ? query[0] : query;
     const searchString = searchTerm.value ?? "";
 
-    // Fetch search results
     fetchSearchResults(searchString);
   });
 

@@ -48,7 +48,7 @@ const input = `{
             "content": {
               "sv": "Perfekt"
             },
-            "createdAt": "2023-09-27T11:16:48.153Z",
+            "createdAt": "2023-09-27",
             "translations": {
               "no": {
                 "title": "Perfekt",
@@ -122,7 +122,7 @@ const input = `{
               "gravatar": "https://www.gravatar.com/avatar/81314b9bcb116204e12954c73eb27998",
               "name": "Zackarias M.",
               "id": "LSC2623524",
-              "email": null
+              "email": "hej@hej.com"
             },
             "verified": true,
             "rating": 1.0,
@@ -135,7 +135,7 @@ const input = `{
             "content": {
               "sv": "Test"
             },
-            "createdAt": "2023-09-27T09:49:37.816Z",
+            "createdAt": "2023-09-27",
             "translations": {
               "no": {
                 "title": "Prøve",
@@ -204,7 +204,7 @@ const input = `{
             "content": {
               "sv": "Mycket bra! 💪"
             },
-            "createdAt": "2023-05-26T07:51:08.92Z",
+            "createdAt": "2023-05-26",
             "translations": {
               "no": {
                 "title": "Demo tid! ✨",
@@ -282,7 +282,7 @@ const input = `{
             "content": {
               "sv": "arst"
             },
-            "createdAt": "2023-08-10T12:21:06.561Z",
+            "createdAt": "2023-08-10",
             "translations": {
               "no": {
                 "title": "Årlig",
@@ -368,7 +368,7 @@ const input = `{
             "content": {
               "sv": "Cool kille med skidglasögon"
             },
-            "createdAt": "2023-03-10T14:27:37.109Z",
+            "createdAt": "2023-03-10",
             "translations": {
               "no": {
                 "title": "Kul jakke!",
@@ -455,7 +455,7 @@ const input = `{
             "content": {
               "sv": "This was a great jacket, the best jacket, unlike any jacket you have ever seen"
             },
-            "createdAt": "2023-08-16T12:27:53.771Z",
+            "createdAt": "2023-08-16",
             "translations": {
               "no": {
                 "title": "Meget",
@@ -540,7 +540,7 @@ const input = `{
             "content": {
               "sv": "Mycket tuff!"
             },
-            "createdAt": "2023-03-07T14:24:07.953Z",
+            "createdAt": "2023-03-07",
             "translations": {
               "no": {
                 "title": "Kul jakke",
@@ -619,7 +619,7 @@ const input = `{
             "content": {
               "sv": "jag beställde ett presentkort på 100kr och jag fick det"
             },
-            "createdAt": "2023-11-29T09:08:33.425Z",
+            "createdAt": "2023-11-29",
             "translations": {
               "no": {
                 "title": "Gavekort",
@@ -726,7 +726,7 @@ const input = `{
             "content": {
               "sv": "Test"
             },
-            "createdAt": "2023-11-28T11:07:06.894Z",
+            "createdAt": "2023-11-28",
             "translations": {
               "no": {
                 "title": "Prøve",
@@ -829,7 +829,7 @@ const input = `{
             "content": {
               "sv": ":bowling::bowling::bowling::bowling::bowling::bowling: :bowling: :bowling: :bowling:   :bowling:"
             },
-            "createdAt": "2023-06-15T11:09:32.216Z",
+            "createdAt": "2023-06-15",
             "translations": {
               "no": {
                 "title": "10/10 Wold :bowling: igjen",

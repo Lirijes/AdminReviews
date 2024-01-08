@@ -9,7 +9,7 @@ const emit = defineEmits(["update:modelValue"]);
 
 <template>
     <div v-if="!showWholeMenu" class="closed-menu">
-        <button class="black-backgroung-btn" @click="props.toggleMenu">
+        <button class="light-background-btn" @click="props.toggleMenu">
           <font-awesome-icon :icon="['fas', 'angles-right']" />
         </button>
         <div class="closed-menu__icons">

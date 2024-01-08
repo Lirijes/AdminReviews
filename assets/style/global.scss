@@ -12,7 +12,7 @@ body {
 }
 
 a {
-  color: $color-gray;
+  color: white;
   text-decoration: none;
   display: inline-block;
 
@@ -32,23 +32,44 @@ h2,
 h3,
 h4 {
   font-weight: 700;
-  color: $color-gray;
+  color: white;
 }
 
 h5 {
   font-size: 16px;
   font-weight: 700;
-  color: $color-gray;
+  margin: 0;
+  color: white;
+}
+
+h6 {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 0;
+  color: white;
 }
 
 p {
   font-size: 12px;
+  color: white;
 }
 
 .p-review {
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 500px;
   margin: 2px 0;
+  color: white;
+}
+
+.p-review-bold {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 2px 0;
+}
+
+.dark-text{
+  color: black;
+  margin: 0;
 }
 
 input[type="search"] {

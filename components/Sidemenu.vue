@@ -81,11 +81,11 @@ onUnmounted(() => {
   &__container {
     position: absolute;
     border-radius: 20px;
-    border: 1px solid $color-cloud-gray;
+    border: 1px solid $color-hurricane-gray;
     padding: 20px;
     height: 100%;
     width: 100%;
-    background-color: $color-smooth-gray;
+    background-color: $color-gray;
 
     &--closed {
       width: 20px;

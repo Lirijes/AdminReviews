@@ -8,12 +8,12 @@
     z-index: 1;
 }
 
-.black-backgroung-btn {
+.light-background-btn {
     font-size: 18px;
     width: 50px;
     height: 50px;
-    background-color: black;
-    color: white;
+    background-color: $color-wild-sand;
+    color: $color-cod-gray;
     border: none;
     border-radius: 20px;
     cursor: pointer;
@@ -21,7 +21,7 @@
 }
 
 .black-background-textbtn {
-    font-size: 16px;
+    font-size: 14px;
     background-color: black;
     color: white;
     border: none;
@@ -32,7 +32,7 @@
 }
 
 .all-around-btn {
-    font-size: 16px;
+    font-size: 14px;
     background-color: $color-teal-dark;
     color: white;
     border: none;

@@ -26,7 +26,7 @@ const updateSearchTerm = (newTerm: string) => {
   margin: 0 auto;
   min-height: 100vh;
   display: flex;
-  background-color: $color-smooth-gray;
+  background-color: $color-gray-lighter;
 }
 
 .default-layout :deep(.page) {
