@@ -206,14 +206,14 @@ const randomReviews = computed(() => {
   &__filteroptions {
     display: flex;
     flex-direction: column;
-    margin: 15px 0;
 
     .filter-options {
       flex-grow: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px; /* Adjust the padding as needed */
+      padding: 20px;
       background-color: $color-smooth-gray;
+      border-radius: 20px;
     }
 
     &-content {

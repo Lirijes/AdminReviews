@@ -58,6 +58,7 @@ onUnmounted(() => {
   width: 100%;
   flex: 0 0 300px;
   transition: all 0.3s ease-in-out;
+  overflow-y: auto;
 
   @media screen and (min-width: 370px) and (max-width: 505px) {
     width: 74%;
@@ -83,7 +84,6 @@ onUnmounted(() => {
     border-radius: 20px;
     border: 1px solid $color-hurricane-gray;
     padding: 20px;
-    height: 100%;
     width: 100%;
     background-color: $color-gray;
 
