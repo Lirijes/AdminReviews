@@ -1,11 +1,10 @@
 <script setup lang="ts">
-
 const props = defineProps<{ modelValue: any }>();
 const emit = defineEmits(["update:modelValue"]);
 const showWholeMenu = ref(true);
 
 const updateModelValue = (newValue: any) => {
-  emit('update:modelValue', newValue);
+  emit("update:modelValue", newValue);
 };
 
 const toggleMenu = () => {
@@ -13,16 +12,16 @@ const toggleMenu = () => {
 };
 
 const handleResize = () => {
-    showWholeMenu.value = window.innerWidth > 992;
+  showWholeMenu.value = window.innerWidth > 992;
 };
 
 onMounted(() => {
   handleResize();
-  window.addEventListener('resize', handleResize);
+  window.addEventListener("resize", handleResize);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
+  window.removeEventListener("resize", handleResize);
 });
 </script>
 
@@ -30,21 +29,20 @@ onUnmounted(() => {
   <div class="sidemenu">
     <div
       class="sidemenu__container"
-      :class="{ 'sidemenu__container--closed': !showWholeMenu
-     }"
+      :class="{ 'sidemenu__container--closed': !showWholeMenu }"
     >
-    <OpenMenu 
-      v-if="showWholeMenu" 
-      :toggleMenu="toggleMenu"
-      :modelValue="props.modelValue"
-      @update:modelValue="updateModelValue"
-      :showWholeMenu="showWholeMenu"
-    />
-    <ClosedMenu 
-      v-if="!showWholeMenu" 
-      :toggleMenu="toggleMenu" 
-      :showWholeMenu="showWholeMenu"
-    />
+      <OpenMenu
+        v-if="showWholeMenu"
+        :toggleMenu="toggleMenu"
+        :modelValue="props.modelValue"
+        @update:modelValue="updateModelValue"
+        :showWholeMenu="showWholeMenu"
+      />
+      <ClosedMenu
+        v-if="!showWholeMenu"
+        :toggleMenu="toggleMenu"
+        :showWholeMenu="showWholeMenu"
+      />
     </div>
   </div>
 </template>

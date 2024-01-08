@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type { Item, ReviewV2 } from '@/utils/mockReviews';
+import type { Item, ReviewV2 } from "@/utils/mockReviews";
 
-const props = defineProps<{ 
+const props = defineProps<{
   modelValue: any;
   toggleMenu: () => void;
-  showWholeMenu: boolean; 
+  showWholeMenu: boolean;
 }>();
 const emit = defineEmits(["update:modelValue"]);
 const reviews = ref<ReviewV2[]>(getReviews());
@@ -12,11 +12,27 @@ const filterMode = ref(false);
 const router = useRouter();
 const { searchResults, searchTerm, fetchSearchResults } = useSearch();
 const filterOptions: { [key: string]: boolean } = {};
-const reviewV2Properties: (keyof ReviewV2)[] = ['createdAt', 'imageUrls', 'published', 'language', 'item'];
-const itemProperties: (keyof Item)[] = ['colorName', 'color', 'baseProduct', 'type', 'size', 'mainColor', 'name'];
+const reviewV2Properties: (keyof ReviewV2)[] = [
+  "createdAt",
+  "imageUrls",
+  "published",
+  "language",
+  "item",
+];
+const itemProperties: (keyof Item)[] = [
+  "colorName",
+  "color",
+  "baseProduct",
+  "type",
+  "size",
+  "mainColor",
+  "name",
+];
 
 // Object to store range-based filter options
-const rangeFilters: { [key: string]: { min: number | null; max: number | null } } = {
+const rangeFilters: {
+  [key: string]: { min: number | null; max: number | null };
+} = {
   createdAt: { min: null, max: null },
 };
 
@@ -44,7 +60,7 @@ const toggleFilterMode = () => {
 };
 
 const applyFilters = () => {
-  console.log('Range Filters:', rangeFilters);
+  console.log("Range Filters:", rangeFilters);
   // Switch back to review mode
   filterMode.value = false;
 };
@@ -69,93 +85,86 @@ const randomReviews = computed(() => {
 </script>
 
 <template>
-    <div v-if="showWholeMenu" class="open-menu">
-        <div class="open-menu__header">
-          <button class="light-background-btn" @click="props.toggleMenu">
-            <font-awesome-icon :icon="['fas', 'angles-left']" />
-          </button>
-          <h2 class="open-menu__header-title"></h2>
+  <div v-if="showWholeMenu" class="open-menu">
+    <div class="open-menu__header">
+      <button class="light-background-btn" @click="props.toggleMenu">
+        <font-awesome-icon :icon="['fas', 'angles-left']" />
+      </button>
+      <h2 class="open-menu__header-title"></h2>
+    </div>
+    <div class="open-menu__searchandfilter">
+      <div class="open-menu__searchandfilter-search">
+        <input
+          type="search"
+          :value="props.modelValue"
+          @input="
+            (e) =>
+              emit('update:modelValue', (e.target as HTMLInputElement).value)
+          "
+          @keyup.enter="handleSearch"
+          placeholder="search.."
+        />
+      </div>
+      <div class="open-menu__searchandfilter-filter">
+        <button class="light-background-btn" @click="toggleFilterMode">
+          <font-awesome-icon :icon="['fas', 'bars-staggered']" />
+        </button>
+      </div>
+    </div>
+    <div v-if="filterMode" class="open-menu__filteroptions">
+      <div class="filter-options">
+        <label v-for="(value, key) in filterOptions" :key="key">
+          <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
+        </label>
+        <label v-for="(range, key) in rangeFilters" :key="key">
+          {{ key }}:
+          <input v-model="range.min" type="number" placeholder="Min" />
+          <input v-model="range.max" type="number" placeholder="Max" />
+        </label>
+        <button class="black-background-textbtn" @click="applyFilters">
+          Apply Filters
+        </button>
+        <button class="black-background-textbtn" @click="cancelFilterMode">
+          Cancel
+        </button>
+      </div>
+    </div>
+    <div v-if="!filterMode">
+      <div class="open-menu__review">
+        <div class="open-menu__review-header">
+          <h5>New reviews</h5>
+          <NuxtLink to="/" class="open-menu__review-header-showall"
+            >show all ></NuxtLink
+          >
         </div>
-        <div class="open-menu__searchandfilter">
-          <div class="open-menu__searchandfilter-search">
-            <input
-              type="search"
-              :value="props.modelValue"
-              @input="
-                (e) =>
-                  emit(
-                    'update:modelValue',
-                    (e.target as HTMLInputElement).value
-                  )
-              "
-              @keyup.enter="handleSearch"
-              placeholder="search.."
-            />
-          </div>
-          <div class="open-menu__searchandfilter-filter">
-            <button class="light-background-btn" @click="toggleFilterMode">
-              <font-awesome-icon
-                :icon="['fas', 'bars-staggered']"
-              />
-            </button>
-          </div>
-        </div>
-        <div v-if="filterMode" class="open-menu__filteroptions">
-          <div class="filter-options">
-            <label v-for="(value, key) in filterOptions" :key="key">
-              <input v-model="filterOptions[key]" type="checkbox" /> {{ key }}
-            </label>
-            <label v-for="(range, key) in rangeFilters" :key="key">
-              {{ key }}:
-              <input v-model="range.min" type="number" placeholder="Min" />
-              <input v-model="range.max" type="number" placeholder="Max" />
-            </label>
-              <button class="black-background-textbtn" @click="applyFilters">Apply Filters</button>
-              <button class="black-background-textbtn" @click="cancelFilterMode">Cancel</button>
-          </div>
-        </div>
-        <div v-if="!filterMode">
-          <div class="open-menu__review">
-            <div class="open-menu__review-header">
-              <h5>New reviews</h5>
-              <NuxtLink
-                to="/"
-                class="open-menu__review-header-showall"
-                >show all ></NuxtLink
-              >
-            </div>
-            <div v-if="randomReviews.length > 0">
-              <div
-                v-for="review in randomReviews"
-                :key="review.id"
-                class="open-menu__review-larg-preview"
-              >
-                <PreviewReview :review="review" />
-              </div>
-            </div>
-          </div>
-          <div class="open-menu__category">
-            <div class="open-menu__category-content">
-              <h5>Published reviews</h5>
-              <NuxtLink
-                to="/"
-                class="open-menu__category-content-showall"
-                >show all ></NuxtLink
-              >
-            </div>
-          </div>
-          <div class="open-menu__category">
-            <div class="open-menu__category-content">
-              <h5>Unpublished reviews</h5>
-              <NuxtLink
-                to="/"
-                class="open-menu__category-content-showall"
-                >show all ></NuxtLink
-              >
-            </div>
+        <div v-if="randomReviews.length > 0">
+          <div
+            v-for="review in randomReviews"
+            :key="review.id"
+            class="open-menu__review-larg-preview"
+          >
+            <PreviewReview :review="review" />
           </div>
         </div>
       </div>
+      <div class="open-menu__category">
+        <div class="open-menu__category-content">
+          <h5>Published reviews</h5>
+          <NuxtLink to="/" class="open-menu__category-content-showall"
+            >show all ></NuxtLink
+          >
+        </div>
+      </div>
+      <div class="open-menu__category">
+        <div class="open-menu__category-content">
+          <h5>Unpublished reviews</h5>
+          <NuxtLink to="/" class="open-menu__category-content-showall"
+            >show all ></NuxtLink
+          >
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">

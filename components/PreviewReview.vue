@@ -10,14 +10,16 @@ const props = defineProps({
 
 const truncateContent = (content: string | Record<string, unknown>) => {
   const actualContent: string =
-    typeof content === 'string'
+    typeof content === "string"
       ? content
-      : typeof content === 'object'
-      ? (content['sv'] as string) || JSON.stringify(content)
-      : '';
+      : typeof content === "object"
+        ? (content["sv"] as string) || JSON.stringify(content)
+        : "";
 
   const maxCharacters = 100;
-  return actualContent.length > maxCharacters ? `${actualContent.slice(0, maxCharacters)}...` : actualContent;
+  return actualContent.length > maxCharacters
+    ? `${actualContent.slice(0, maxCharacters)}...`
+    : actualContent;
 };
 </script>
 
@@ -26,7 +28,9 @@ const truncateContent = (content: string | Record<string, unknown>) => {
     <div class="preview-card__header">
       <h5 class="dark-text">{{ review.author.name }}</h5>
       <p class="dark-text">date</p>
-      <p class="preview-card__header-content dark-text">{{ truncateContent(review.content) }}</p>
+      <p class="preview-card__header-content dark-text">
+        {{ truncateContent(review.content) }}
+      </p>
     </div>
     <div
       class="preview-card__img"
